@@ -16,10 +16,6 @@ class TodoItem extends Component {
     };
   }
 
-  handleEdit () {
-    this.setState({ editing: true });
-  }
-
   handleSave(id, text) {
     if (text.length === 0) {
       this.props.deleteTodo(id);
@@ -39,17 +35,13 @@ class TodoItem extends Component {
           </IconButton>
         }
       >
-        <MenuItem primaryText="Edit" onTouchTap={this.handleEdit.bind(this)}/>
-        <MenuItem primaryText="Delete" onTouchTap={() => deleteTodo(todo.id)}/>
       </IconMenu>
     );
 
     let element;
     if (this.state.editing) {
       element = (
-        <TodoTextInput text={todo.text}
-                      editing={this.state.editing}
-                      onSave={(text) => this.handleSave(todo.id, text)} />
+       "My Todo Item"
       );
     } else {
       element = (
@@ -74,9 +66,7 @@ class TodoItem extends Component {
 
 TodoItem.propTypes = {
   todo: PropTypes.object.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  deleteTodo: PropTypes.func.isRequired,
-  completeTodo: PropTypes.func.isRequired
+  completeQuest: PropTypes.func.isRequired
 };
 
 export default TodoItem;

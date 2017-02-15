@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import TodoItem from './TodoItem';
 import Footer from './Footer';
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters';
+import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/QuestFilters';
 import { Checkbox, List } from 'material-ui';
 
 const defaultStyle = {
@@ -22,7 +22,7 @@ class MainSection extends Component {
   }
 
   handleClearCompleted() {
-    const atLeastOneCompleted = this.props.todos.some(todo => todo.completed);
+    const atLeastOneCompleted = this.props.quests.some(todo => todo.completed);
     if (atLeastOneCompleted) {
       this.props.actions.clearCompleted();
     }
@@ -32,25 +32,12 @@ class MainSection extends Component {
     this.setState({ filter });
   }
 
-  renderToggleAll(completedCount) {
-    const { todos, actions } = this.props;
-    if (todos.length > 0) {
-      return (
-        <Checkbox className="toggle-all"
-                  style={{marginBottom: 10}}
-                  label="Toggle All"
-                  defaultChecked={completedCount === todos.length}
-                  onCheck={actions.completeAll} />
-      );
-    }
-  }
-
   renderFooter(completedCount) {
-    const { todos } = this.props;
+    const { quests } = this.props;
     const { filter } = this.state;
-    const activeCount = todos.length - completedCount;
+    const activeCount = quests.length - completedCount;
 
-    if (todos.length) {
+    if (quests.length) {
       return (
         <Footer completedCount={completedCount}
                 activeCount={activeCount}
@@ -62,21 +49,20 @@ class MainSection extends Component {
   }
 
   render() {
-    const { todos, actions } = this.props;
+    const { quests, actions } = this.props;
     const { filter } = this.state;
 
-    const filteredTodos = todos.filter(TODO_FILTERS[filter]);
-    const completedCount = todos.reduce((count, todo) =>
+    const filteredQuests = quests.filter(TODO_FILTERS[filter]);
+    const completedCount = quests.reduce((count, todo) =>
       todo.completed ? count + 1 : count,
       0
     );
 
     return (
       <section className="main" style={defaultStyle}>
-        {this.renderToggleAll(completedCount)}
         <List className="todo-list">
-          {filteredTodos.map(todo =>
-            <TodoItem key={todo.id} todo={todo} {...actions} />
+          {filteredQuests.map(todo =>
+            <TodoItem key={todo.id} todo={todo} {...actions.quests} />
           )}
         </List>
         {this.renderFooter(completedCount)}
@@ -86,7 +72,7 @@ class MainSection extends Component {
 }
 
 MainSection.propTypes = {
-  todos: PropTypes.array.isRequired,
+  quests: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
 

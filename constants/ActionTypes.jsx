@@ -1,8 +1,5 @@
-export const ADD_TODO = 'ADD_TODO';
-export const DELETE_TODO = 'DELETE_TODO';
-export const EDIT_TODO = 'EDIT_TODO';
-export const COMPLETE_TODO = 'COMPLETE_TODO';
-export const COMPLETE_ALL = 'COMPLETE_ALL';
+export const SYNC_QUESTS = 'SYNC_QUESTS';
+export const COMPLETE_QUEST = 'COMPLETE_QUEST';
 export const CLEAR_COMPLETED = 'CLEAR_COMPLETED';
 
 export const OPEN_DRAWER = 'OPEN_DRAWER';

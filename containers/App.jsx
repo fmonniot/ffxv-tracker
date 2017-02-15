@@ -6,6 +6,7 @@ import MainSection from '../components/MainSection';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 
+import * as RouteActions from 'react-router-redux';
 import * as TodoActions from '../actions/todos';
 
 // For Customization Options, edit  or use
@@ -22,7 +23,7 @@ class App extends Component {
   }
 
   render() {
-    const { todos, actions, drawer } = this.props;
+    const { todos, actions, drawer, route } = this.props;
     return (
       <div>
         <MuiThemeProvider muiTheme={theme}>
@@ -32,9 +33,9 @@ class App extends Component {
               open={drawer.open}
               onRequestChange={this.onMenuSelected.bind(this)}
             >
-              <MenuItem onTouchTap={actions.openPage.bind(this, 'quests')}>Quests</MenuItem>
-              <MenuItem onTouchTap={actions.openPage.bind(this, 'side-quests')}>Side Quests</MenuItem>
-              <MenuItem onTouchTap={actions.openPage.bind(this, 'hunts')}>Hunts</MenuItem>
+              <MenuItem onTouchTap={route.push.bind(this, '/quests')}>Quests</MenuItem>
+              <MenuItem onTouchTap={route.push.bind(this, '/side-quests')}>Side Quests</MenuItem>
+              <MenuItem onTouchTap={route.push.bind(this, '/hunts')}>Hunts</MenuItem>
             </Drawer>
             <Header addTodo={actions.addTodo} openDrawer={actions.openDrawer}/>
             <MainSection todos={todos} actions={actions}/>
@@ -60,7 +61,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions, dispatch)
+    actions: bindActionCreators(TodoActions, dispatch),
+    route: bindActionCreators(RouteActions, dispatch)
   };
 }
 

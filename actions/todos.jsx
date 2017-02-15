@@ -23,3 +23,15 @@ export function completeAll() {
 export function clearCompleted() {
   return { type: types.CLEAR_COMPLETED };
 }
+
+export function openDrawer() {
+  return { type: types.OPEN_DRAWER };
+}
+
+export function closeDrawer() {
+  return { type: types.CLOSE_DRAWER };
+}
+
+export function openPage(page) {
+  return {type: types.OPEN_PAGE };
+}

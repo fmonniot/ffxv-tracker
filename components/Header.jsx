@@ -14,10 +14,17 @@ class Header extends Component {
     }
   }
 
+  handleMenu() {
+    this.props.openDrawer();
+  }
+
   render() {
     return (
       <header className="header">
-          <AppBar title="React + Redux + Material UI Boilerplate" />
+          <AppBar 
+            title="React + Redux + Material UI Boilerplate"
+            onLeftIconButtonTouchTap={this.handleMenu.bind(this)}
+          />
           <h1 style={defaultStyle} >todos</h1>
           <TodoTextInput newTodo
                          onSave={this.handleSave.bind(this)}
@@ -28,7 +35,8 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  addTodo: PropTypes.func.isRequired
+  addTodo: PropTypes.func.isRequired,
+  openDrawer: PropTypes.func.isRequired
 };
 
 export default Header;

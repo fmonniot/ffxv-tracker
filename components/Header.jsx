@@ -16,7 +16,7 @@ import SortIcon from 'material-ui/svg-icons/content/sort';
 import AppBar from 'material-ui/AppBar';
 
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/QuestFilters';
-import { SORT_NAME, SORT_LEVEL, SORT_CHAPTER, SORT_LOCATION } from '../constants/QuestFilters';
+import { SORT_NAME, SORT_LEVEL, SORT_REGION, SORT_LOCATION } from '../constants/QuestFilters';
 
 const defaultStyle = {
   marginLeft: 20
@@ -81,7 +81,7 @@ class Header extends Component {
           <IconMenu iconButtonElement={sortButton}>
               <MenuItem primaryText="By Name" onTouchTap={() => onSort(SORT_NAME)} />
               <MenuItem primaryText="By Level" onTouchTap={() => onSort(SORT_LEVEL)} />
-              <MenuItem primaryText="By Chapter" onTouchTap={() => onSort(SORT_CHAPTER)} />
+              <MenuItem primaryText="By Region" onTouchTap={() => onSort(SORT_REGION)} />
               <MenuItem primaryText="By Location" onTouchTap={() => onSort(SORT_LOCATION)} />
           </IconMenu>
           <IconMenu iconButtonElement={moreButton} >

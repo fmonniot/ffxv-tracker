@@ -9,7 +9,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Toggle from 'material-ui/Toggle';
 
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/QuestFilters';
-import { SORT_NAME, SORT_LEVEL, SORT_CHAPTER, SORT_LOCATION } from '../constants/QuestFilters';
+import { SORT_NAME, SORT_LEVEL, SORT_REGION, SORT_LOCATION } from '../constants/QuestFilters';
 
 const QUEST_FILTERS = {
   [SHOW_ALL]: () => true,
@@ -26,7 +26,7 @@ function sortString(a, b) {
 const QUEST_SORTS = {
   [SORT_NAME]: (a, b) => sortString(a.name, b.name),
   [SORT_LEVEL]: (a, b) => a.level - b.level,
-  [SORT_CHAPTER]: (a, b) => a.chapter - b.chapter,
+  [SORT_REGION]: (a, b) => a.chapter - b.chapter,
   [SORT_LOCATION]: (a, b) => sortString(a.location, b.location)
 }
 

@@ -1,6 +1,13 @@
 # Final Fantasy XV Quests & Hunts tracker
 
+## TODO
 
+- Store information in local storage
+- Add sorting in QuestList
+- Add correct header based on sort in QuestList
+- Add Hunts
+- Header title based on what's displayed (side quests or hunt)
+- Link to quest on IGN
 
 ## Usage
 

@@ -65,7 +65,6 @@ class App extends Component {
             <Drawer docked={false}
                     open={drawer.open}
                     onRequestChange={this.onMenuSelected.bind(this)} >
-              <MenuItem onTouchTap={route.push.bind(this, '/quests')}>Quests</MenuItem>
               <MenuItem onTouchTap={route.push.bind(this, '/side-quests')}>Side Quests</MenuItem>
               <MenuItem onTouchTap={route.push.bind(this, '/hunts')}>Hunts</MenuItem>
               <Divider />

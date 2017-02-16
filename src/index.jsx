@@ -7,6 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 import App from '../containers/App';
 import configureStore from '../store/configureStore';
+import { fetchSideQuests } from '../actions/quests';
 
 //Needed for React Developer Tools
 window.React = React;
@@ -19,6 +20,9 @@ injectTapEventPlugin();
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
+
+// Init the app
+store.dispatch(fetchSideQuests())
 
 ReactDOM.render(
   <Provider store={store}>

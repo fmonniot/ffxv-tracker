@@ -45,12 +45,14 @@ class QuestList extends Component {
   }
 
   renderQuestSecondaryText(quest) {
+    const chapter = (quest.chapter) ? `from chapter ${quest.chapter}` : ''
+    const location = `Region: ${quest.region}` + ((quest.location) ? ` / Location: ${quest.location}` : '')
     return (
       <div>
         <span style={{width: '20%', display: 'inline-block'}}>{`Level ${quest.level}`}</span>
-        <span>{`from chapter ${quest.chapter}`}</span>
+        <span>{chapter}</span>
         <br/>
-        Location: {quest.location}
+        {location}
       </div>
     );
   }

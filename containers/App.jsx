@@ -6,6 +6,7 @@ import QuestList from '../components/QuestList';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
+import Snackbar from 'material-ui/Snackbar';
 
 import * as RouteActions from 'react-router-redux';
 import * as QuestsActions from '../actions/quests';
@@ -36,6 +37,10 @@ class App extends Component {
       this.props.actions.quests.completeQuest(id)
   }
 
+  sync() {
+    this.props.actions.quests.fetchSideQuests()
+  }
+
   render() {
     const { quests: questsState, actions, drawer, route } = this.props;
     const { filter, sort, quests} = questsState;
@@ -44,11 +49,19 @@ class App extends Component {
       0
     );
     const activeQuestCount = quests.length - completedQuestsCount;
+    
+    const openSnackBar = quests.error !== undefined
+    const messageSnackBar = openSnackBar ? quests.error : ''
 
     return (
       <div>
         <MuiThemeProvider muiTheme={theme}>
           <div>
+            <Snackbar
+              open={openSnackBar}
+              message={messageSnackBar}
+              autoHideDuration={4000}
+            />
             <Drawer docked={false}
                     open={drawer.open}
                     onRequestChange={this.onMenuSelected.bind(this)} >
@@ -56,7 +69,7 @@ class App extends Component {
               <MenuItem onTouchTap={route.push.bind(this, '/side-quests')}>Side Quests</MenuItem>
               <MenuItem onTouchTap={route.push.bind(this, '/hunts')}>Hunts</MenuItem>
               <Divider />
-              <MenuItem>Synchronize</MenuItem>
+              <MenuItem onTouchTap={this.sync.bind(this)}>Synchronize</MenuItem>
             </Drawer>
             <Header 
               openDrawer={actions.nav.openDrawer}

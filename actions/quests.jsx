@@ -13,9 +13,9 @@ export function syncQuests() {
 }
 
 export function sortQuests(sort) {
-  return { type: 'QUEST_SORT', sort };
+  return { type: types.QUEST_SORT, sort };
 }
 
 export function filterQuests(filter) {
-  return { type: 'QUEST_FILTER', filter };
+  return { type: types.QUEST_FILTER, filter };
 }

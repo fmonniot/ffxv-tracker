@@ -1,11 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import TodoTextInput from './TodoTextInput';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 
 import InboxIcon from 'material-ui/svg-icons/content/inbox';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
@@ -17,21 +16,52 @@ import SortIcon from 'material-ui/svg-icons/content/sort';
 import AppBar from 'material-ui/AppBar';
 
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/QuestFilters';
-import { ORDER_NAME, ORDER_LEVEL, ORDER_CHAPTER, ORDER_LOCATION } from '../constants/QuestFilters';
+import { SORT_NAME, SORT_LEVEL, SORT_CHAPTER, SORT_LOCATION } from '../constants/QuestFilters';
 
 const defaultStyle = {
   marginLeft: 20
 };
 
-class Header extends Component {
-  handleSave(text) {
-    if (text.length !== 0) {
-      this.props.addTodo(text);
-    }
-  }
+const FILTER_TITLES = {
+  [SHOW_ALL]: 'All',
+  [SHOW_ACTIVE]: 'Active',
+  [SHOW_COMPLETED]: 'Completed'
+};
 
+const FILTER_ICONS = {
+  [SHOW_ALL]: <InboxIcon />,
+  [SHOW_ACTIVE]: <LoopIcon />,
+  [SHOW_COMPLETED]: <ArchiveIcon />
+};
+
+class Header extends Component {
   handleMenu() {
     this.props.openDrawer();
+  }
+
+  countForFilter(filter) {
+    const { activeCount, completedCount } = this.props;
+    if (filter === SHOW_ALL) return activeCount + completedCount;
+    if (filter === SHOW_ACTIVE) return activeCount;
+    if (filter === SHOW_COMPLETED) return completedCount;
+  }
+
+  renderFilterLink(filter) {
+    const { filter: selectedFilter, onShow, activeFilter } = this.props;
+    const active = filter === selectedFilter;
+    const count = this.countForFilter(filter);
+    const title = FILTER_TITLES[filter] + (count > 0 ? ' (' +  count + ')' : '');
+    const style = (activeFilter === filter) ? {fontWeight: 'bold'} : {};
+
+    return (
+      <MenuItem key={filter}
+                style={style}
+                focusState={'keyboard-focused'}
+                primaryText={`Show ${title}`}
+                leftIcon={FILTER_ICONS[filter]}
+                onTouchTap={() => onShow(filter)}
+      />
+    );
   }
 
   render() {
@@ -49,15 +79,15 @@ class Header extends Component {
     const toolbar = (
       <ToolbarGroup>
           <IconMenu iconButtonElement={sortButton}>
-              <MenuItem primaryText="By Name" onTouchTap={() => onSort(ORDER_NAME)} />
-              <MenuItem primaryText="By Level" onTouchTap={() => onSort(ORDER_LEVEL)} />
-              <MenuItem primaryText="By Chapter" onTouchTap={() => onSort(ORDER_CHAPTER)} />
-              <MenuItem primaryText="By Location" onTouchTap={() => onSort(ORDER_LOCATION)} />
+              <MenuItem primaryText="By Name" onTouchTap={() => onSort(SORT_NAME)} />
+              <MenuItem primaryText="By Level" onTouchTap={() => onSort(SORT_LEVEL)} />
+              <MenuItem primaryText="By Chapter" onTouchTap={() => onSort(SORT_CHAPTER)} />
+              <MenuItem primaryText="By Location" onTouchTap={() => onSort(SORT_LOCATION)} />
           </IconMenu>
           <IconMenu iconButtonElement={moreButton} >
-              <MenuItem primaryText="Show all" leftIcon={<InboxIcon />} onTouchTap={() => onShow(SHOW_ALL)} />
-              <MenuItem primaryText="Show completed" leftIcon={<LoopIcon />} onTouchTap={() => onShow(SHOW_COMPLETED)} />
-              <MenuItem primaryText="Show active" leftIcon={<ArchiveIcon />} onTouchTap={() => onShow(SHOW_ACTIVE)} />
+            {[SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED].map(filter =>
+              this.renderFilterLink(filter)
+            )}
           </IconMenu>
       </ToolbarGroup>
     );
@@ -65,13 +95,11 @@ class Header extends Component {
     return (
       <header className="header">
           <AppBar 
-            title="FFXV Quests Tracking"
+            title="FFXV Tracking - Quests"
             onLeftIconButtonTouchTap={this.handleMenu.bind(this)}
           >
             {toolbar}
           </AppBar>
-          <h1 style={defaultStyle} >Quests</h1>
-          Something
       </header>
     );
   }
@@ -80,7 +108,11 @@ class Header extends Component {
 Header.propTypes = {
   openDrawer: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
-  onShow: PropTypes.func.isRequired
+  onShow: PropTypes.func.isRequired,
+  completedCount: PropTypes.number.isRequired,
+  activeCount: PropTypes.number.isRequired,
+  activeFilter: PropTypes.string.isRequired,
+  activeSort: PropTypes.string.isRequired
 };
 
 export default Header;

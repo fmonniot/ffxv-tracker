@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import MainSection from '../components/MainSection';
+import QuestList from '../components/QuestList';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
@@ -25,28 +25,33 @@ class App extends Component {
   }
 
   handleQuestShow(filter) {
-    // TODO Emit action
-    console.log('filter = ', filter)
     this.props.actions.quests.filterQuests(filter);
   }
 
   handleQuestSort(sort) {
-    // TODO Emit action
-    console.log('sort = ', sort)
     this.props.actions.quests.sortQuests(sort);
   }
 
+  handleQuestCompletion(id) {
+      this.props.actions.quests.completeQuest(id)
+  }
+
   render() {
-    const { quests, actions, drawer, route } = this.props;
+    const { quests: questsState, actions, drawer, route } = this.props;
+    const { filter, sort, quests} = questsState;
+    const completedQuestsCount = quests.reduce((count, quest) =>
+      quest.completed ? count + 1 : count,
+      0
+    );
+    const activeQuestCount = quests.length - completedQuestsCount;
+
     return (
       <div>
         <MuiThemeProvider muiTheme={theme}>
           <div>
-            <Drawer
-              docked={false}
-              open={drawer.open}
-              onRequestChange={this.onMenuSelected.bind(this)}
-            >
+            <Drawer docked={false}
+                    open={drawer.open}
+                    onRequestChange={this.onMenuSelected.bind(this)} >
               <MenuItem onTouchTap={route.push.bind(this, '/quests')}>Quests</MenuItem>
               <MenuItem onTouchTap={route.push.bind(this, '/side-quests')}>Side Quests</MenuItem>
               <MenuItem onTouchTap={route.push.bind(this, '/hunts')}>Hunts</MenuItem>
@@ -57,8 +62,15 @@ class App extends Component {
               openDrawer={actions.nav.openDrawer}
               onShow={this.handleQuestShow.bind(this)}
               onSort={this.handleQuestSort.bind(this)}
+              completedCount={completedQuestsCount}
+              activeCount={activeQuestCount}
+              activeFilter={filter}
+              activeSort={sort}
             />
-            <MainSection quests={quests} actions={actions}/>
+            <QuestList quests={quests}
+                         onQuestCompletion={this.handleQuestCompletion.bind(this)}
+                         filter={filter} 
+                         sort={sort} />
           </div>
         </MuiThemeProvider>
       </div>
@@ -67,7 +79,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  quests: PropTypes.array.isRequired,
+  quests: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired, // TODO specify content of 
   drawer: PropTypes.object.isRequired
 };

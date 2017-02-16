@@ -26,7 +26,7 @@ function sortString(a, b) {
 const QUEST_SORTS = {
   [SORT_NAME]: (a, b) => sortString(a.name, b.name),
   [SORT_LEVEL]: (a, b) => a.level - b.level,
-  [SORT_REGION]: (a, b) => a.chapter - b.chapter,
+  [SORT_REGION]: (a, b) => sortString(a.region, b.region),
   [SORT_LOCATION]: (a, b) => sortString(a.location, b.location)
 }
 

@@ -6,13 +6,15 @@ import rootReducer from '../reducers';
 import * as middlewares from '../middleware';
 
 export default function configureStore(initialState) {
+
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
   const store = createStore(
     rootReducer,
     initialState,
-    compose(
+    composeEnhancers(
       applyMiddleware(...Object.values(middlewares)),
-      persistState(),
-      window.devToolsExtension ? window.devToolsExtension() : undefined
+      persistState()
     )
   );
 

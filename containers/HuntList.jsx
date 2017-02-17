@@ -1,28 +1,28 @@
+
 import React, { Component, PropTypes } from "react"
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import CompletableListView from '../components/CompletableListView'
-import * as QuestsActions from '../actions/quests'
+import * as HuntsActions from '../actions/hunts'
 
-class QuestList extends Component {
+class HuntList extends Component {
 
     static propTypes = {
-        quests: PropTypes.object.isRequired,
+        hunts: PropTypes.object.isRequired,
         actions: PropTypes.object.isRequired // TODO specify content of 
     }
 
-    handleQuestCompletion(id) {
-        this.props.actions.quests.completeQuest(id)
+    handleHuntCompletion(id) {
+        this.props.actions.completeHunt(id)
     }
 
     render() {
-        const { quests: questsState } = this.props;
-        const { filter, sort, quests} = questsState;
+        const { hunts: { filter, sort, hunts} } = this.props;
 
         return (
-                <CompletableListView items={quests}
-                        onItemCompletion={this.handleQuestCompletion.bind(this)}
+                <CompletableListView items={hunts}
+                        onItemCompletion={this.handleHuntCompletion.bind(this)}
                         filter={filter} 
                         sort={sort} />
         );
@@ -31,19 +31,17 @@ class QuestList extends Component {
 
 function mapStateToProps(state) {
     return {
-        quests: state.quests
+        hunts: state.hunts
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: {
-            quests: bindActionCreators(QuestsActions, dispatch)
-        }
+        actions: bindActionCreators(HuntsActions, dispatch)
     };
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(QuestList)
+)(HuntList)

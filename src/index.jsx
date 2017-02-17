@@ -7,8 +7,9 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 import App from '../containers/App';
 import QuestList from '../containers/QuestList'
-import configureStore from '../store/configureStore';
-import { fetchGeneratedData } from '../actions/init';
+import HuntList from '../containers/HuntList'
+import configureStore from '../store/configureStore'
+import { fetchGeneratedData } from '../actions/init'
 
 //Needed for React Developer Tools
 window.React = React;
@@ -31,7 +32,7 @@ ReactDOM.render(
       <Route path="/" component={withRouter(App)}>
         <IndexRedirect to="/side-quests" />
         <Route path="/side-quests" component={QuestList} />
-        <Route path="/hunts" component={QuestList} />
+        <Route path="/hunts" component={HuntList} />
       </Route>
     </Router>
   </Provider>,

@@ -1,6 +1,6 @@
 import { COMPLETE_QUEST, QUEST_SORT, QUEST_FILTER, RESPONSE_SIDE_QUESTS } from '../constants/ActionTypes';
-import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/QuestFilters';
-import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/QuestFilters';
+import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/Filters';
+import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/Filters';
 
 // TODO Have an object with {quests, filter, sort}
 const initialState = {

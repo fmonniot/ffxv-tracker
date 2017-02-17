@@ -1,36 +1,35 @@
-import React, { Component, PropTypes, cloneElement } from "react";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import Header from '../components/Header';
-import QuestList from '../components/QuestList';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
-import MenuItem from 'material-ui/MenuItem';
-import Snackbar from 'material-ui/Snackbar';
+import React, { Component, PropTypes, cloneElement } from "react"
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import Header from '../components/Header'
+import Drawer from 'material-ui/Drawer'
+import Divider from 'material-ui/Divider'
+import MenuItem from 'material-ui/MenuItem'
+import Snackbar from 'material-ui/Snackbar'
 
-import * as RouteActions from 'react-router-redux';
-import * as QuestsActions from '../actions/quests';
-import * as NavActions from '../actions/navigation';
+import * as RouteActions from 'react-router-redux'
+import * as QuestsActions from '../actions/quests'
+import * as NavActions from '../actions/navigation'
 
 // For Customization Options, edit  or use
 // './src/material_ui_raw_theme_file.jsx' as a template.
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import theme from '../src/material_ui_raw_theme_file'
 
 class App extends Component {
 
   onMenuSelected(open, reason) {
     if(reason === 'clickaway') {
-      this.props.actions.nav.closeDrawer();
+      this.props.actions.nav.closeDrawer()
     }
   }
 
   handleQuestShow(filter) {
-    this.props.actions.quests.filterQuests(filter);
+    this.props.actions.quests.filterQuests(filter)
   }
 
   handleQuestSort(sort) {
-    this.props.actions.quests.sortQuests(sort);
+    this.props.actions.quests.sortQuests(sort)
   }
 
   sync() {
@@ -39,13 +38,13 @@ class App extends Component {
   }
 
   render() {
-    const { quests: questsState, actions, drawer, route, children } = this.props;
-    const { filter, sort, quests} = questsState;
+    const { quests: questsState, actions, drawer, route, children } = this.props
+    const { filter, sort, quests} = questsState
     const completedQuestsCount = quests.reduce((count, quest) =>
       quest.completed ? count + 1 : count,
       0
-    );
-    const activeQuestCount = quests.length - completedQuestsCount;
+    )
+    const activeQuestCount = quests.length - completedQuestsCount
 
     const openSnackBar = quests.error !== undefined
     const messageSnackBar = openSnackBar ? quests.error : ''
@@ -80,7 +79,7 @@ class App extends Component {
           </div>
         </MuiThemeProvider>
       </div>
-    );
+    )
   }
 }
 
@@ -88,13 +87,13 @@ App.propTypes = {
   quests: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired, // TODO specify content of 
   drawer: PropTypes.object.isRequired
-};
+}
 
 function mapStateToProps(state) {
   return {
     quests: state.quests,
     drawer: state.drawer
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -104,10 +103,10 @@ function mapDispatchToProps(dispatch) {
       nav: bindActionCreators(NavActions, dispatch)
     },
     route: bindActionCreators(RouteActions, dispatch)
-  };
+  }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App)

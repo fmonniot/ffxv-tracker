@@ -15,8 +15,8 @@ import SortIcon from 'material-ui/svg-icons/content/sort';
 
 import AppBar from 'material-ui/AppBar';
 
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/QuestFilters';
-import { SORT_NAME, SORT_LEVEL, SORT_REGION, SORT_LOCATION } from '../constants/QuestFilters';
+import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/Filters';
+import { SORT_NAME, SORT_LEVEL, SORT_REGION, SORT_LOCATION } from '../constants/Filters';
 
 const defaultStyle = {
   marginLeft: 20

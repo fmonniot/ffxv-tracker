@@ -1,7 +1,7 @@
 import { COMPLETE_HUNT, HUNT_SORT, HUNT_FILTER, RESPONSE_HUNTS } from '../constants/ActionTypes';
 
-import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/QuestFilters';
-import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/QuestFilters';
+import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/Filters';
+import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/Filters';
 
 // TODO Have an object with {quests, filter, sort}
 const initialState = {
@@ -14,7 +14,7 @@ export default function hunts(state = initialState, action) {
   switch (action.type) {
   case RESPONSE_HUNTS:
     if(action.status === 'success') {
-      return Object.assign({}, state, {quests: action.hunts});
+      return Object.assign({}, state, {hunts: action.hunts});
     } else {
       return Object.assign({}, state, {error: action.error});
     }
@@ -26,7 +26,7 @@ export default function hunts(state = initialState, action) {
           : hunt
     );
 
-    return Object.assign({}, state, {quests: completedHunts});
+    return Object.assign({}, state, {hunts: completedHunts});
 
   case HUNT_FILTER:
     return Object.assign({}, state, {filter: action.filter})

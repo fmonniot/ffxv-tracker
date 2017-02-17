@@ -11,6 +11,7 @@
     [x] Generify the components/QuestList into a components/CompletableListView
     [x] constants/QuestFilters into Filters (app should not be big enough to be a problem)
     [x] containers/App aware of quests/hunts and use it dispatch to correct action (handleQuestShow(filter) -> handleShow(kind, filter))
+[ ] Improve performance when rendering items in list
 
 ## Usage
 

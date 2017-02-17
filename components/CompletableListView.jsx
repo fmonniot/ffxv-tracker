@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PureComponent, PropTypes } from 'react';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 
@@ -98,6 +98,19 @@ class CompletableListView extends Component {
           <Subheader>{group}</Subheader>
           {grouped[group].map( (item) => (
 
+           
+
+            <CompletableListItem key={item.id} onTapped={onRowTapped(item)} {...item} />
+
+          ))}
+        </List>
+      ))}
+      </div>
+    );
+  }
+}
+
+ /*
             <ListItem
               key={item.id}
               style={this.listStyle(item.completed)}
@@ -108,12 +121,56 @@ class CompletableListView extends Component {
               secondaryTextLines={2}
               nestedItems={item.rewards.map((reward, index) => <ListItem key={index} primaryText={reward} />)}
             />
+            */
 
-          ))}
-        </List>
-      ))}
+class CompletableListItem extends PureComponent {
+
+  static propTypes = {
+    onTapped: PropTypes.func.isRequired
+  }
+
+  static contextTypes = {
+    muiTheme: PropTypes.object.isRequired
+  }
+
+  listStyle() {
+    const { completed } =  this.props
+    const color = completed ? this.context.muiTheme.tableRow.selectedColor : undefined;
+    return { backgroundColor: color };
+  }
+
+  renderItemSecondaryText(item) {
+    const { level, chapter, region, location } = this.props
+
+    const levelBlock = (typeof level === 'number')
+         ? (<span style={{width: '20%', display: 'inline-block'}}>{`Level ${level}`}</span>)
+         : undefined;
+    const chapterBlock = (chapter) ? `from chapter ${chapter}` : undefined
+    const locationBlock = `Region: ${region}` + ((location) ? ` / Location: ${location}` : '')
+
+    return (
+      <div>
+        {levelBlock} {chapterBlock}
+        { (levelBlock === undefined && chapterBlock === undefined) ? undefined : (<br/>)}
+        {locationBlock}
       </div>
     );
+  }
+
+  render() {
+    const { id, completed, name, rewards, onTapped } = this.props
+
+  return (
+    <ListItem
+        style={this.listStyle()}
+        nestedListStyle={this.listStyle()}
+        leftCheckbox={<Checkbox onCheck={onTapped} checked={completed}/>}
+        primaryText={name}
+        secondaryText={this.renderItemSecondaryText()}
+        secondaryTextLines={2}
+        nestedItems={rewards.map((reward, index) => <ListItem key={index} primaryText={reward} />)}
+      />
+    )
   }
 }
 

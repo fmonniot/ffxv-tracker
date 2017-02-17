@@ -2,12 +2,16 @@ import { COMPLETE_QUEST, QUEST_SORT, QUEST_FILTER, RESPONSE_SIDE_QUESTS } from '
 import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/Filters';
 import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/Filters';
 
+import Perf from 'react-addons-perf'
+
 // TODO Have an object with {quests, filter, sort}
 const initialState = {
   items: [],
   filter: SHOW_ALL,
   sort: SORT_NAME
 };
+
+let lastLocPayload = {pathname: 'none'}
 
 export default function quests(state = initialState, action) {
   switch (action.type) {
@@ -32,6 +36,19 @@ export default function quests(state = initialState, action) {
 
   case QUEST_SORT:
     return Object.assign({}, state, {sort: action.sort})
+
+  case '@@router/LOCATION_CHANGE':
+    const locPayload = action.payload
+    console.log(`Location changed. Printing performance from ${lastLocPayload.pathname} to ${locPayload.pathname}.`)
+    Perf.stop()
+    
+    const measurements = Perf.getLastMeasurements()
+    Perf.printInclusive(measurements)
+    Perf.printExclusive(measurements)
+    Perf.printWasted(measurements)
+
+    console.log(`Collecting performance from ${locPayload.pathname} to next location change.`)
+    Perf.start()
 
   default:
     return state;

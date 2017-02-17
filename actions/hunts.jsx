@@ -2,24 +2,24 @@ import * as types from '../constants/ActionTypes';
 
 // Complete toggle and Reset
 
-export function completeQuest(id) {
-  return { type: types.COMPLETE_QUEST, id };
+export function completeHunt(id) {
+  return { type: types.COMPLETE_HUNT, id };
 }
 
 // UI
 
-export function sortQuests(sort) {
-  return { type: types.QUEST_SORT, sort };
+export function sortHunts(sort) {
+  return { type: types.HUNT_SORT, sort };
 }
 
-export function filterQuests(filter) {
-  return { type: types.QUEST_FILTER, filter };
+export function filterHunts(filter) {
+  return { type: types.HUNT_FILTER, filter };
 }
 
 // Network
 
-export function requestSideQuests() {
-  return { type: types.REQUEST_SIDE_QUESTS }
+export function requestHunts() {
+  return { type: types.REQUEST_HUNTS }
 }
 
 function slugify(text) {
@@ -31,11 +31,11 @@ function slugify(text) {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
-export function receiveSideQuests(status, json) {
-  const action = { type: types.RESPONSE_SIDE_QUESTS, status, receivedAt: Date.now() }
+export function receiveHunts(status, json) {
+  const action = { type: types.RESPONSE_HUNTS, status, receivedAt: Date.now() }
 
   if(status === "success") {
-    return Object.assign(action, {quests: json.map(e => Object.assign(e, {id: slugify(e.name)}))})
+    return Object.assign(action, {hunts: json.map(e => Object.assign(e, {id: slugify(e.name)}))})
   } else {
     return Object.assign(action, {error: json})
   }

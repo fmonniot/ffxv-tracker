@@ -2,12 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, browserHistory, IndexRedirect, withRouter } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import App from '../containers/App';
+import QuestList from '../containers/QuestList'
 import configureStore from '../store/configureStore';
-import { fetchSideQuests } from '../actions/quests';
+import { fetchGeneratedData } from '../actions/init';
 
 //Needed for React Developer Tools
 window.React = React;
@@ -22,12 +23,16 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 // Init the app
-store.dispatch(fetchSideQuests())
+store.dispatch(fetchGeneratedData())
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={App} />
+      <Route path="/" component={withRouter(App)}>
+        <IndexRedirect to="/side-quests" />
+        <Route path="/side-quests" component={QuestList} />
+        <Route path="/hunts" component={QuestList} />
+      </Route>
     </Router>
   </Provider>,
   document.getElementById("root")

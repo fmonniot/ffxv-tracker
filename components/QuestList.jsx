@@ -25,9 +25,30 @@ function sortString(a, b) {
 
 const QUEST_SORTS = {
   [SORT_NAME]: (a, b) => sortString(a.name, b.name),
-  [SORT_LEVEL]: (a, b) => a.level - b.level,
+  [SORT_LEVEL]: (a, b) => ((typeof a.level === 'number') ? a.level : -1) - ((typeof b.level === 'number') ? b.level : -1),
   [SORT_REGION]: (a, b) => sortString(a.region, b.region),
   [SORT_LOCATION]: (a, b) => sortString(a.location, b.location)
+}
+
+const QUEST_GROUPS = {
+  [SORT_NAME]: (quest) => quest.name.charAt(0).toUpperCase(),
+  [SORT_LEVEL]: (quest) => (typeof quest.level === 'number') ? `Level ${quest.level}` : 'No Level',
+  [SORT_REGION]: (quest) => quest.region,
+  [SORT_LOCATION]: (quest) => quest.location
+}
+
+// {region:'ab', t: 1},{region:'ab', t:2},{region:'bc', t:3},{region:'cd', t:4}
+
+// quests = [{key:...},{key:...}]
+// keyTransform = string => string
+function groupQuests(quests, keyTransform) {  
+  return quests.reduce((grouped, quest) => {
+    const k = keyTransform(quest)
+    
+    grouped[k] = Array.prototype.concat( (grouped[k] || []), quest )
+
+    return grouped
+  }, {})
 }
 
 // Rename to QuestsView
@@ -45,13 +66,16 @@ class QuestList extends Component {
   }
 
   renderQuestSecondaryText(quest) {
-    const chapter = (quest.chapter) ? `from chapter ${quest.chapter}` : ''
+    const level = (typeof quest.level === 'number')
+         ? (<span style={{width: '20%', display: 'inline-block'}}>{`Level ${quest.level}`}</span>)
+         : undefined;
+    const chapter = (quest.chapter) ? `from chapter ${quest.chapter}` : undefined
     const location = `Region: ${quest.region}` + ((quest.location) ? ` / Location: ${quest.location}` : '')
+
     return (
       <div>
-        <span style={{width: '20%', display: 'inline-block'}}>{`Level ${quest.level}`}</span>
-        <span>{chapter}</span>
-        <br/>
+        {level} {chapter}
+        { (level === undefined && chapter === undefined) ? '' : (<br/>)}
         {location}
       </div>
     );
@@ -64,15 +88,17 @@ class QuestList extends Component {
 
   render() {
     const { quests, onQuestCompletion, filter, sort } = this.props;
-    const preparedQuests = quests.filter(QUEST_FILTERS[filter]).sort(QUEST_SORTS[sort]);
+
+    const grouped = groupQuests(quests.filter(QUEST_FILTERS[filter]).sort(QUEST_SORTS[sort]), QUEST_GROUPS[sort])
 
     const onRowTapped = (quest) => (event, checked) => onQuestCompletion(quest.id);
 
     return (
       <div>
-        <List>
-          <Subheader>Current Category</Subheader> {/* Would be the Location for location, A-Z for name or the chapter for chapter */}
-          {preparedQuests.map( (quest) => (
+        {Object.keys(grouped).map( (group) => (
+        <List key={group}>
+          <Subheader>{group}</Subheader>
+          {grouped[group].map( (quest) => (
 
             <ListItem
               key={quest.id}
@@ -87,6 +113,7 @@ class QuestList extends Component {
 
           ))}
         </List>
+      ))}
       </div>
     );
   }

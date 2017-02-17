@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes, cloneElement } from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
@@ -33,23 +33,20 @@ class App extends Component {
     this.props.actions.quests.sortQuests(sort);
   }
 
-  handleQuestCompletion(id) {
-      this.props.actions.quests.completeQuest(id)
-  }
-
   sync() {
+    // TODO Correct sync action (if any ?)
     this.props.actions.quests.fetchSideQuests()
   }
 
   render() {
-    const { quests: questsState, actions, drawer, route } = this.props;
+    const { quests: questsState, actions, drawer, route, children } = this.props;
     const { filter, sort, quests} = questsState;
     const completedQuestsCount = quests.reduce((count, quest) =>
       quest.completed ? count + 1 : count,
       0
     );
     const activeQuestCount = quests.length - completedQuestsCount;
-    
+
     const openSnackBar = quests.error !== undefined
     const messageSnackBar = openSnackBar ? quests.error : ''
 
@@ -68,7 +65,7 @@ class App extends Component {
               <MenuItem onTouchTap={route.push.bind(this, '/side-quests')}>Side Quests</MenuItem>
               <MenuItem onTouchTap={route.push.bind(this, '/hunts')}>Hunts</MenuItem>
               <Divider />
-              <MenuItem onTouchTap={this.sync.bind(this)}>Synchronize</MenuItem>
+              <MenuItem onTouchTap={this.sync.bind(this)} disabled={true}>Synchronize</MenuItem>
             </Drawer>
             <Header 
               openDrawer={actions.nav.openDrawer}
@@ -79,10 +76,7 @@ class App extends Component {
               activeFilter={filter}
               activeSort={sort}
             />
-            <QuestList quests={quests}
-                         onQuestCompletion={this.handleQuestCompletion.bind(this)}
-                         filter={filter} 
-                         sort={sort} />
+            {this.props.children}
           </div>
         </MuiThemeProvider>
       </div>

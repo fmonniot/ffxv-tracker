@@ -85,11 +85,11 @@ class CompletableListView extends Component {
   }
 
   render() {
-    const { items, oItemCompletion, filter, sort } = this.props;
+    const { items, onItemCompletion, filter, sort } = this.props;
 
     const grouped = this.groupItems(items.filter(ITEM_FILTERS[filter]).sort(ITEM_SORTS[sort]), ITEM_GROUPS[sort])
 
-    const onRowTapped = (item) => (event, checked) => oItemCompletion(item.id);
+    const onRowTapped = (item) => (event, checked) => onItemCompletion(item.id);
 
     return (
       <div>

@@ -8,39 +8,36 @@ import * as QuestsActions from '../actions/quests'
 class QuestList extends Component {
 
     static propTypes = {
-        quests: PropTypes.object.isRequired,
+        items: PropTypes.array.isRequired,
+        filter: PropTypes.string.isRequired,
+        sort: PropTypes.string.isRequired,
         actions: PropTypes.object.isRequired // TODO specify content of 
     }
 
     handleQuestCompletion(id) {
-        this.props.actions.quests.completeQuest(id)
+        this.props.actions.completeQuest(id)
     }
 
     render() {
-        const { quests: questsState } = this.props;
-        const { filter, sort, quests} = questsState;
+        const { filter, sort, items} = this.props
 
         return (
-                <CompletableListView items={quests}
+                <CompletableListView items={items}
                         onItemCompletion={this.handleQuestCompletion.bind(this)}
                         filter={filter} 
                         sort={sort} />
-        );
+        )
     }
 }
 
 function mapStateToProps(state) {
-    return {
-        quests: state.quests
-    };
+    return state.quests
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: {
-            quests: bindActionCreators(QuestsActions, dispatch)
-        }
-    };
+        actions: bindActionCreators(QuestsActions, dispatch)
+    }
 }
 
 export default connect(

@@ -3,14 +3,14 @@
 ## TODO
 
 [ ] Store information in local storage
-[ ] Add correct header based on sort in QuestList
-[ ] Header title based on what's displayed (side quests or hunt)
+[x] Add correct header based on sort in QuestList
+[x] Header title based on what's displayed (side quests or hunt)
 [ ] Link to quest on IGN
 [ ] Data generator should have a switch to use either fixtures or live website
-[ ] Add Hunts
+[x] Add Hunts
     [x] Generify the components/QuestList into a components/CompletableListView
     [x] constants/QuestFilters into Filters (app should not be big enough to be a problem)
-    [ ] containers/App aware of quests/hunts and use it dispatch to correct action (handleQuestShow(filter) -> handleShow(kind, filter))
+    [x] containers/App aware of quests/hunts and use it dispatch to correct action (handleQuestShow(filter) -> handleShow(kind, filter))
 
 ## Usage
 

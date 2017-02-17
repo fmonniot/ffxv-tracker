@@ -5,7 +5,7 @@ import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/
 
 // TODO Have an object with {quests, filter, sort}
 const initialState = {
-  hunts: [],
+  items: [],
   filter: SHOW_ALL,
   sort: SORT_NAME
 };
@@ -14,19 +14,19 @@ export default function hunts(state = initialState, action) {
   switch (action.type) {
   case RESPONSE_HUNTS:
     if(action.status === 'success') {
-      return Object.assign({}, state, {hunts: action.hunts});
+      return Object.assign({}, state, {items: action.hunts});
     } else {
       return Object.assign({}, state, {error: action.error});
     }
 
   case COMPLETE_HUNT:
-    const completedHunts = state.hunts.map(hunt =>
+    const completedHunts = state.items.map(hunt =>
       hunt.id === action.id
           ? Object.assign({}, hunt, { completed: !hunt.completed })
           : hunt
     );
 
-    return Object.assign({}, state, {hunts: completedHunts});
+    return Object.assign({}, state, {items: completedHunts});
 
   case HUNT_FILTER:
     return Object.assign({}, state, {filter: action.filter})

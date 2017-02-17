@@ -4,7 +4,7 @@ import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/
 
 // TODO Have an object with {quests, filter, sort}
 const initialState = {
-  quests: [],
+  items: [],
   filter: SHOW_ALL,
   sort: SORT_NAME
 };
@@ -13,19 +13,19 @@ export default function quests(state = initialState, action) {
   switch (action.type) {
   case RESPONSE_SIDE_QUESTS:
     if(action.status === 'success') {
-      return Object.assign({}, state, {quests: action.quests});
+      return Object.assign({}, state, {items: action.quests});
     } else {
       return Object.assign({}, state, {error: action.error});
     }
 
   case COMPLETE_QUEST:
-    const completedQuests = state.quests.map(quest =>
+    const completedQuests = state.items.map(quest =>
       quest.id === action.id
           ? Object.assign({}, quest, { completed: !quest.completed })
           : quest
     );
 
-    return Object.assign({}, state, {quests: completedQuests});
+    return Object.assign({}, state, {items: completedQuests});
 
   case QUEST_FILTER:
     return Object.assign({}, state, {filter: action.filter})

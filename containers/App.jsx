@@ -1,53 +1,87 @@
 import React, { Component, PropTypes, cloneElement } from "react"
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Header from '../components/Header'
 import Drawer from 'material-ui/Drawer'
 import Divider from 'material-ui/Divider'
 import MenuItem from 'material-ui/MenuItem'
 import Snackbar from 'material-ui/Snackbar'
-
-import * as RouteActions from 'react-router-redux'
-import * as QuestsActions from '../actions/quests'
-import * as NavActions from '../actions/navigation'
 
 // For Customization Options, edit  or use
 // './src/material_ui_raw_theme_file.jsx' as a template.
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import theme from '../src/material_ui_raw_theme_file'
 
+import Header from '../components/Header'
+import * as QuestsActions from '../actions/quests'
+import * as HuntsActions from '../actions/hunts'
+import * as NavActions from '../actions/navigation'
+
+// TODO Move to /constants
+const HUNTS = 'hunts'
+const SIDE_QUESTS = 'quests'
+const NO_KIND = 'NO_KIND'
+
+const PATH_TO_KIND = {
+  ['/hunts']: HUNTS,
+  ['/side-quests']: SIDE_QUESTS
+}
+
 class App extends Component {
 
-  onMenuSelected(open, reason) {
+  static propTypes = {
+    items: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired, // TODO specify content of 
+    drawer: PropTypes.object.isRequired
+  }
+
+  onMenuTapped(open, reason) {
     if(reason === 'clickaway') {
       this.props.actions.nav.closeDrawer()
     }
   }
 
-  handleQuestShow(filter) {
-    this.props.actions.quests.filterQuests(filter)
+  onMenuItemTapped(path) {
+    const { router, actions: { nav } } = this.props
+
+    router.push(path)
+    nav.closeDrawer()
   }
 
-  handleQuestSort(sort) {
-    this.props.actions.quests.sortQuests(sort)
+  handleShow(filter) {
+    const kind = this.props.kind
+
+    const f = {
+      [HUNTS]: this.props.actions.hunts.filterHunts,
+      [SIDE_QUESTS]: this.props.actions.quests.filterQuests,
+      [NO_KIND]: () => undefined
+    }[kind]
+
+    f(filter)
   }
 
-  sync() {
-    // TODO Correct sync action (if any ?)
-    this.props.actions.quests.fetchSideQuests()
+  handleSort(sort) {
+    const kind = this.props.kind
+
+    const f = {
+      [HUNTS]: this.props.actions.hunts.sortHunts,
+      [SIDE_QUESTS]: this.props.actions.quests.sortQuests,
+      [NO_KIND]: () => undefined
+    }[kind]
+
+    f(sort)
   }
 
   render() {
-    const { quests: questsState, actions, drawer, route, children } = this.props
-    const { filter, sort, quests} = questsState
-    const completedQuestsCount = quests.reduce((count, quest) =>
-      quest.completed ? count + 1 : count,
+    const { items: { filter, sort, items}, actions, drawer, children, kind } = this.props
+
+    const completedItemsCount = items.reduce((count, item) =>
+      item.completed ? count + 1 : count,
       0
     )
-    const activeQuestCount = quests.length - completedQuestsCount
+    const activeItemCount = items.length - completedItemsCount
 
-    const openSnackBar = quests.error !== undefined
-    const messageSnackBar = openSnackBar ? quests.error : ''
+    const openSnackBar = items.error !== undefined
+    const messageSnackBar = openSnackBar ? items.error : ''
 
     return (
       <div>
@@ -60,18 +94,17 @@ class App extends Component {
             />
             <Drawer docked={false}
                     open={drawer.open}
-                    onRequestChange={this.onMenuSelected.bind(this)} >
-              <MenuItem onTouchTap={route.push.bind(this, '/side-quests')}>Side Quests</MenuItem>
-              <MenuItem onTouchTap={route.push.bind(this, '/hunts')}>Hunts</MenuItem>
-              <Divider />
-              <MenuItem onTouchTap={this.sync.bind(this)} disabled={true}>Synchronize</MenuItem>
+                    onRequestChange={this.onMenuTapped.bind(this)} >
+              <MenuItem onTouchTap={this.onMenuItemTapped.bind(this, '/side-quests')}>Side Quests</MenuItem>
+              <MenuItem onTouchTap={this.onMenuItemTapped.bind(this, '/hunts')}>Hunts</MenuItem>
             </Drawer>
             <Header 
-              openDrawer={actions.nav.openDrawer}
-              onShow={this.handleQuestShow.bind(this)}
-              onSort={this.handleQuestSort.bind(this)}
-              completedCount={completedQuestsCount}
-              activeCount={activeQuestCount}
+              subtitle={kind}
+              onMenuClick={actions.nav.openDrawer}
+              onShow={this.handleShow.bind(this)}
+              onSort={this.handleSort.bind(this)}
+              completedCount={completedItemsCount}
+              activeCount={activeItemCount}
               activeFilter={filter}
               activeSort={sort}
             />
@@ -83,16 +116,22 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  quests: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired, // TODO specify content of 
-  drawer: PropTypes.object.isRequired
-}
 
 function mapStateToProps(state) {
+  const path = state.routing.locationBeforeTransitions.pathname
+
+  const kind = PATH_TO_KIND[path] || NO_KIND
+  const items = {
+    [HUNTS]: state.hunts,
+    [SIDE_QUESTS]: state.quests,
+    [NO_KIND]: {}
+  }[kind]
+
   return {
-    quests: state.quests,
+    items, kind,
     drawer: state.drawer
+    //,
+    //route: state.routing.
   }
 }
 
@@ -100,9 +139,10 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       quests: bindActionCreators(QuestsActions, dispatch),
+      hunts: bindActionCreators(HuntsActions, dispatch),
       nav: bindActionCreators(NavActions, dispatch)
-    },
-    route: bindActionCreators(RouteActions, dispatch)
+    }
+    //, route: bindActionCreators(RouteActions, dispatch)
   }
 }
 

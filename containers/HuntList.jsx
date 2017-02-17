@@ -1,4 +1,3 @@
-
 import React, { Component, PropTypes } from "react"
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -9,7 +8,9 @@ import * as HuntsActions from '../actions/hunts'
 class HuntList extends Component {
 
     static propTypes = {
-        hunts: PropTypes.object.isRequired,
+        items: PropTypes.array.isRequired,
+        filter: PropTypes.string.isRequired,
+        sort: PropTypes.string.isRequired,
         actions: PropTypes.object.isRequired // TODO specify content of 
     }
 
@@ -18,27 +19,25 @@ class HuntList extends Component {
     }
 
     render() {
-        const { hunts: { filter, sort, hunts} } = this.props;
+        const { filter, sort, items } = this.props
 
         return (
-                <CompletableListView items={hunts}
+                <CompletableListView items={items}
                         onItemCompletion={this.handleHuntCompletion.bind(this)}
                         filter={filter} 
                         sort={sort} />
-        );
+        )
     }
 }
 
 function mapStateToProps(state) {
-    return {
-        hunts: state.hunts
-    };
+    return state.hunts
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(HuntsActions, dispatch)
-    };
+    }
 }
 
 export default connect(

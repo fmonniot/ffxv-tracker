@@ -2,7 +2,7 @@
 
 ## TODO
 
-[ ] Store information in local storage
+[x] Store information in local storage
 [x] Add correct header based on sort in QuestList
 [x] Header title based on what's displayed (side quests or hunt)
 [ ] Link to quest on IGN

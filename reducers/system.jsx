@@ -1,5 +1,5 @@
 import { SYSTEM_INIT, SYSTEM_CONFIG_RESPONSE, SYSTEM_VERSION_UPDATED } from '../constants/ActionTypes'
-import { fetchGeneratedData } from '../actions/system'
+import { fetchGeneratedData, updateVersion } from '../actions/system'
 
 const initialState = {
     versions: {
@@ -12,7 +12,8 @@ const initialState = {
 }
 
 const ACTIONS = {
-    generated: fetchGeneratedData
+    generated: fetchGeneratedData,
+    app: (v) => updateVersion('app', v)
 }
 
 export default function system(state = initialState, action) {

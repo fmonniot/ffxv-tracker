@@ -40,6 +40,12 @@ To put compiled files into `static` directory, type the following command.
 $ npm run build
 ```
 
+### Publish to GitHub page
+
+```bash
+$ npm run publish
+```
+
 ## Tools
 
 In case I forgot, this is based on https://github.com/takanabe/react-redux-material_ui-boilerplate and use the following tools and frameworks:

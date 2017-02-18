@@ -17,6 +17,9 @@ export const OPEN_DRAWER = 'OPEN_DRAWER'
 export const CLOSE_DRAWER = 'CLOSE_DRAWER'
 
 // Navigation
-export const OPEN_PAGE = 'OPEN_PAGE';
+export const OPEN_PAGE = 'OPEN_PAGE'
 
 // Initialisation
+export const SYSTEM_INIT = 'SYSTEM_INIT'
+export const SYSTEM_CONFIG_RESPONSE = 'SYSTEM_CONFIG_RESPONSE'
+export const SYSTEM_VERSION_UPDATED = 'SYSTEM_VERSION_UPDATED'

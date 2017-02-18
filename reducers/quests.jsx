@@ -1,8 +1,10 @@
-import { COMPLETE_QUEST, QUEST_SORT, QUEST_FILTER, RESPONSE_SIDE_QUESTS } from '../constants/ActionTypes';
-import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/Filters';
-import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/Filters';
-
 import Perf from 'react-addons-perf'
+import merge from 'lodash/merge'
+import find from 'lodash/find'
+
+import { COMPLETE_QUEST, QUEST_SORT, QUEST_FILTER, RESPONSE_SIDE_QUESTS } from '../constants/ActionTypes'
+import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/Filters'
+import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/Filters'
 
 // TODO Have an object with {quests, filter, sort}
 const initialState = {
@@ -17,7 +19,11 @@ export default function quests(state = initialState, action) {
   switch (action.type) {
   case RESPONSE_SIDE_QUESTS:
     if(action.status === 'success') {
-      return Object.assign({}, state, {items: action.quests});
+      const items = action.quests.map((item) => {
+        return merge({}, find(state.items, {'id': item.id}), item)
+      })
+
+      return Object.assign({}, state, { items });
     } else {
       return Object.assign({}, state, {error: action.error});
     }

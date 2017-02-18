@@ -9,7 +9,7 @@ import App from '../containers/App';
 import QuestList from '../containers/QuestList'
 import HuntList from '../containers/HuntList'
 import configureStore from '../store/configureStore'
-import { fetchGeneratedData } from '../actions/init'
+import { initSystem } from '../actions/system'
 
 //Needed for React Developer Tools
 window.React = React;
@@ -24,7 +24,7 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 // Init the app
-store.dispatch(fetchGeneratedData())
+store.dispatch(initSystem())
 
 ReactDOM.render(
   <Provider store={store}>

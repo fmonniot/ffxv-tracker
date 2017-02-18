@@ -1,5 +1,7 @@
-import { COMPLETE_HUNT, HUNT_SORT, HUNT_FILTER, RESPONSE_HUNTS } from '../constants/ActionTypes';
+import merge from 'lodash/merge'
+import find from 'lodash/find'
 
+import { COMPLETE_HUNT, HUNT_SORT, HUNT_FILTER, RESPONSE_HUNTS } from '../constants/ActionTypes';
 import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/Filters';
 import { SORT_NAME, SORT_REGION, SORT_LEVEL, SORT_LOCATION } from '../constants/Filters';
 
@@ -14,7 +16,11 @@ export default function hunts(state = initialState, action) {
   switch (action.type) {
   case RESPONSE_HUNTS:
     if(action.status === 'success') {
-      return Object.assign({}, state, {items: action.hunts});
+      const items = action.hunts.map((item) => {
+        return merge({}, find(state.items, {'id': item.id}), item)
+      })
+
+      return Object.assign({}, state, { items });
     } else {
       return Object.assign({}, state, {error: action.error});
     }

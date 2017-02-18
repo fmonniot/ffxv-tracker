@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+import { updateVersion } from './system'
 
 // Complete toggle and Reset
 
@@ -31,12 +32,13 @@ function slugify(text) {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
-export function receiveSideQuests(status, json) {
+export const receiveSideQuests = (status, json) => (dispatch) => {
   const action = { type: types.RESPONSE_SIDE_QUESTS, status, receivedAt: Date.now() }
 
   if(status === "success") {
-    return Object.assign(action, {quests: json.map(e => Object.assign(e, {id: slugify(e.name)}))})
+    dispatch(Object.assign(action, {quests: json.map(e => Object.assign(e, {id: slugify(e.name)}))}))
+    //dispatch(updateVersion(''))
   } else {
-    return Object.assign(action, {error: json})
+    dispatch(Object.assign(action, {error: json}))
   }
 }

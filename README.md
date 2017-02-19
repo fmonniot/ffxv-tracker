@@ -1,21 +1,5 @@
 # Final Fantasy XV Quests & Hunts tracker
 
-## TODO
-
-[x] Store information in local storage
-[x] Remember completed when updating data
-[x] Add correct header based on sort in QuestList
-[x] Header title based on what's displayed (side quests or hunt)
-[ ] Link to quest on IGN
-[ ] Data generator should have a switch to use either fixtures or live website
-[x] Add Hunts
-    [x] Generify the components/QuestList into a components/CompletableListView
-    [x] constants/QuestFilters into Filters (app should not be big enough to be a problem)
-    [x] containers/App aware of quests/hunts and use it dispatch to correct action (handleQuestShow(filter) -> handleShow(kind, filter))
-[ ] Improve performance when rendering items in list
-[ ] Refactor (merge) Hunts and Side Quests implementation (actions/reducers/containers are practically the same)
-[ ] Load Hunts and Side Quests as two separate JSON (let update one without the other)
-
 ## Usage
 
 ### Package installation

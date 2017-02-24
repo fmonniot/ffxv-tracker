@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux'
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 import persistState from 'redux-localstorage'
 import rootReducer from '../reducers';
 import * as middlewares from '../middleware';

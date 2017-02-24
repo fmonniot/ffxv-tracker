@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory, IndexRedirect, withRouter } from 'react-router'
+import { Router, Route, hashHistory, IndexRedirect, withRouter } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import App from '../containers/App';
@@ -21,7 +21,7 @@ window.React = React;
 injectTapEventPlugin();
 
 const store = configureStore();
-const history = syncHistoryWithStore(browserHistory, store);
+const history = syncHistoryWithStore(hashHistory, store);
 
 // Init the app
 store.dispatch(initSystem())

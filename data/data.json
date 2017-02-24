@@ -1,0 +1,14 @@
+{
+    "hunter-ranks": [
+        {"rank": "Apprentice", "stars": 5, "reward": null},
+        {"rank": "Trapper", "stars": 15, "reward": "Titanium Bangle"},
+        {"rank": "Chaser", "stars": 30 , "reward": "Heliodor Bracelet"},
+        {"rank": "Ranger", "stars": 50, "reward": "Silver Bangle"},
+        {"rank": "Slayer", "stars": 40, "reward": "Sapphire Bracelet"},
+        {"rank": "Officer", "stars": 40, "reward": "Gold Bangle"},
+        {"rank": "Guardian", "stars": 40, "reward": "Black Choker"},
+        {"rank": "Grandmaster", "stars": 30, "reward": "Blue Diamond Bracelet"},
+        {"rank": "Hand of Mercy", "stars": 43, "reward": "Centurion Bangle"},
+        {"rank": "Alleyway Jack", "stars": null, "reward": "Dark Matter Bracelet"}
+    ]
+}

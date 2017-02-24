@@ -15,7 +15,7 @@ export const fetchGeneratedData = (version) => (dispatch) => {
   dispatch(requestSideQuests())
   dispatch(requestHunts())
 
-  return fetch('./data-generated.json')
+  return fetch('./data/generated.json')
     .then(response => response.json())
     .then(json => dispatch(receiveGeneratedData('success', json, version)))
     .catch(err => dispatch(receiveGeneratedData('error', err)))
@@ -32,7 +32,7 @@ export const initSystem = () => (dispatch) => {
 
   dispatch({type: SYSTEM_INIT})
 
-  return fetch('./config.json')
+  return fetch('./data/config.json')
     .then(r => r.json())
     .then(json => dispatch({
       type: SYSTEM_CONFIG_RESPONSE, success: true, json

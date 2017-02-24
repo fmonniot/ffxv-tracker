@@ -171,6 +171,6 @@ const hunts = parseIGNWikiPage(
     ' Bounty Hunts', parseHuntsRow, arrToHuntObject
 )
 
-fs.writeFileSync('./data-generated.json', JSON.stringify({
+fs.writeFileSync('./data/generated.json', JSON.stringify({
     sideQuests, hunts
 }))

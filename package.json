@@ -10,10 +10,10 @@
     "build": "webpack --progress --colors",
     "generate": "node generate-json.js",
     "update-version": "node update-version.js",
-    "cp-config": "cp config.json static/ && cp data.json static/ && cp data-generated.json static/",
-    "commit": "git add static && git add config.json && git add VERSION && git commit -m \"publish version `cat VERSION`\"",
+    "cp-data": "cp -R data/ static/data/",
+    "commit": "git add static && git add data && git commit -m \"publish version `cat VERSION`\"",
     "push": "git push && git subtree push --prefix static origin gh-pages",
-    "publish": "npm run build && npm run generate && npm run update-version && npm run cp-config && npm run commit && npm run push"
+    "publish": "npm run build && npm run generate && npm run update-version && npm run cp-data && npm run commit && npm run push"
   },
   "repository": {
     "type": "git",

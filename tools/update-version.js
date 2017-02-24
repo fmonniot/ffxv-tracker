@@ -1,5 +1,5 @@
 const fs = require('fs')
-const config = require('./data/config.json')
+const config = require('../data/config.json')
 const merge = require('lodash/merge')
 
 const newAppVersion = config.versions.app + 1

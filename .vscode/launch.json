@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Generate JSON",
-            "program": "${workspaceRoot}/generate-json.js",
+            "program": "${workspaceRoot}/tools/generate-json.js",
             "cwd": "${workspaceRoot}"
         },
         {

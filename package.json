@@ -8,8 +8,8 @@
     "start": "webpack-dev-server -d --hot --inline --progress --colors  --history-api-fallback",
     
     "build": "webpack --progress --colors",
-    "generate": "node generate-json.js",
-    "update-version": "node update-version.js",
+    "generate": "node tools/generate-json.js",
+    "update-version": "node tools/update-version.js",
     "cp-data": "cp -R data/ static/data/",
     "commit": "git add static && git add data && git commit -m \"publish version `cat VERSION`\"",
     "push": "git push && git subtree push --prefix static origin gh-pages",

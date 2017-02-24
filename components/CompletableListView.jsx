@@ -7,6 +7,8 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import Toggle from 'material-ui/Toggle';
+import ActionInfo from 'material-ui/svg-icons/action/info';
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/Filters';
 import { SORT_NAME, SORT_LEVEL, SORT_REGION, SORT_LOCATION } from '../constants/Filters';
@@ -158,19 +160,29 @@ class CompletableListItem extends PureComponent {
   }
 
   render() {
-    const { id, completed, name, rewards, onTapped } = this.props
+    const { id, completed, name, rewards, onTapped, link } = this.props
 
-  return (
-    <ListItem
-        style={this.listStyle()}
-        nestedListStyle={this.listStyle()}
-        leftCheckbox={<Checkbox onCheck={onTapped} checked={completed}/>}
-        primaryText={name}
-        secondaryText={this.renderItemSecondaryText()}
-        secondaryTextLines={2}
-        nestedItems={rewards.map((reward, index) => <ListItem key={index} primaryText={reward} />)}
-      />
-    )
+    const nested = rewards.map((reward, index) => <ListItem key={index} primaryText={reward} />)
+    if(link !== undefined) {
+      nested.unshift((
+        <ListItem key={'link'} primaryText={
+          <a key={'link'} nestedLevel={1} href={`https://www.ign.com/wikis/${link}`}>See on IGN.com</a>
+          } />
+      ))
+    }
+    
+
+    return (
+      <ListItem
+          style={this.listStyle()}
+          nestedListStyle={this.listStyle()}
+          leftCheckbox={<Checkbox onCheck={onTapped} checked={completed}/>}
+          primaryText={name}
+          secondaryText={this.renderItemSecondaryText()}
+          secondaryTextLines={2}
+          nestedItems={nested}
+        />
+      )
   }
 }
 

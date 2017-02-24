@@ -1,5 +1,6 @@
 const fs = require('fs')
 const cheerio = require('cheerio')
+const _ = require('lodash')
 
 // Selector to the main section
 const ghContentSelector = 'body > div.shell.container-content-main > div.gh-shell > div.container_24.clear > div.grid_16.gh-content > div.grid_12.push_4.alpha.omega.bodyCopy.gh-content'
@@ -62,13 +63,24 @@ function parseQuestRow($, tds) {
     const isCid = tds.length === 2
     return tds.map((rawTd, i) => {
         if(isCid) {
-            if(i == 1) {
+            if(i == 0) {
+                return [
+                    $(rawTd).text().trim(),
+                    _.find(rawTd.children, (c) => c.name === 'a').attribs.href
+                ]
+            } else if(i == 1) {
                 return getRewards($(rawTd))
             } else {
                 return $(rawTd).text().trim()
             }
         } else {
-            if(i == 3) {
+            if(i == 0) {
+                const a = _.find(rawTd.children, (c) => c.name === 'a')
+                return [
+                    $(rawTd).text().trim(),
+                    (a != undefined) ? a.attribs.href : undefined
+                ]
+            } else if(i == 3) {
                 const td = $(rawTd)
 
                 return getRewards(td)
@@ -86,7 +98,8 @@ function arrToQuestObject(arr) {
     // Cid
     if(arr.length === 2) {
         return {
-            name: arr[0],
+            name: arr[0][0],
+            link: arr[0][1],
             rewards: arr[1]
         }
     }
@@ -101,7 +114,8 @@ function arrToQuestObject(arr) {
         chapter = parseInt(result[2], 10)
     }
     return {
-        name: arr[0],
+        name: arr[0][0],
+        link: arr[0][1],
         level: parseInt(arr[1], 10),
         chapter, location,
         rewards: arr[3]

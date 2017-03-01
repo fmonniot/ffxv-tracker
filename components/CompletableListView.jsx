@@ -1,6 +1,7 @@
 import React, { Component, PureComponent, PropTypes } from 'react';
 import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
+import Infinite from 'react-infinite';
 
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
@@ -53,6 +54,11 @@ class CompletableListView extends Component {
     muiTheme: PropTypes.object.isRequired
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {height: 400};
+  }
+
   renderItemSecondaryText(item) {
     const level = (typeof item.level === 'number')
          ? (<span style={{width: '20%', display: 'inline-block'}}>{`Level ${item.level}`}</span>)
@@ -86,6 +92,31 @@ class CompletableListView extends Component {
     return { backgroundColor: color };
   }
 
+  updateDimensions() {
+    let height = this.state.height
+    
+    if(!!this.container) {
+      height = this.container.clientHeight
+    }
+
+    console.log("updateDimensions ->", height)
+
+    this.setState({ height });
+  }
+
+  componentWillMount() {
+    this.updateDimensions();
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+    this.updateDimensions()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+  }
+
   render() {
     const { items, onItemCompletion, filter, sort } = this.props;
 
@@ -93,20 +124,21 @@ class CompletableListView extends Component {
 
     const onRowTapped = (item) => (event, checked) => onItemCompletion(item.id);
 
+    const children = []
+    for(const title in grouped) {
+      const group = grouped[title]
+      children.push((<Subheader>{title}</Subheader>))
+
+      for(const item of group) {
+        children.push((<CompletableListItem key={item.id} onTapped={onRowTapped(item)} {...item} />))
+      }
+    }
+
     return (
-      <div>
-        {Object.keys(grouped).map( (group) => (
-        <List key={group}>
-          <Subheader>{group}</Subheader>
-          {grouped[group].map( (item) => (
-
-           
-
-            <CompletableListItem key={item.id} onTapped={onRowTapped(item)} {...item} />
-
-          ))}
-        </List>
-      ))}
+      <div style={{height: 'calc(100vh - 64px)'}} ref={(container) => this.container = container}>
+        <Infinite containerHeight={this.state.height} elementHeight={88}>
+          {children}
+        </Infinite>
       </div>
     );
   }

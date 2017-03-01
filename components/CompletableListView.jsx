@@ -3,7 +3,7 @@ import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow
 import TextField from 'material-ui/TextField';
 import Infinite from 'react-infinite';
 
-import {List, ListItem} from 'material-ui/List';
+import {ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
@@ -127,7 +127,7 @@ class CompletableListView extends Component {
     const children = []
     for(const title in grouped) {
       const group = grouped[title]
-      children.push((<Subheader>{title}</Subheader>))
+      children.push((<Subheader key={title + "sub"}>{title}</Subheader>))
 
       for(const item of group) {
         children.push((<CompletableListItem key={item.id} onTapped={onRowTapped(item)} {...item} />))
@@ -143,19 +143,6 @@ class CompletableListView extends Component {
     );
   }
 }
-
- /*
-            <ListItem
-              key={item.id}
-              style={this.listStyle(item.completed)}
-              nestedListStyle={this.listStyle(item.completed)}
-              leftCheckbox={<Checkbox onCheck={onRowTapped(item)} checked={item.completed}/>}
-              primaryText={item.name}
-              secondaryText={this.renderItemSecondaryText(item)}
-              secondaryTextLines={2}
-              nestedItems={item.rewards.map((reward, index) => <ListItem key={index} primaryText={reward} />)}
-            />
-            */
 
 class CompletableListItem extends PureComponent {
 

@@ -198,7 +198,7 @@ class CompletableListItem extends PureComponent {
     if(link !== undefined) {
       nested.unshift((
         <ListItem key={'link'} primaryText={
-          <a key={'link'} nestedLevel={1} href={`https://www.ign.com/wikis/${link}`}>See on IGN.com</a>
+          <a key={'link'} href={`https://www.ign.com${link}`}>See on IGN.com</a>
           } />
       ))
     }

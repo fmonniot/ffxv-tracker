@@ -44,6 +44,7 @@ export default function quests(state = initialState, action) {
     return Object.assign({}, state, {sort: action.sort})
 
   case '@@router/LOCATION_CHANGE':
+  /*
     const locPayload = action.payload
     console.log(`Location changed. Printing performance from ${lastLocPayload.pathname} to ${locPayload.pathname}.`)
     Perf.stop()
@@ -55,6 +56,7 @@ export default function quests(state = initialState, action) {
 
     console.log(`Collecting performance from ${locPayload.pathname} to next location change.`)
     Perf.start()
+    */
 
   default:
     return state;

@@ -31,8 +31,8 @@ function slugify(text) {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
-export function receiveHunts(status, json) {
-  const action = { type: types.RESPONSE_HUNTS, status, receivedAt: Date.now() }
+export function receiveHunts(status, json, version) {
+  const action = { type: types.RESPONSE_HUNTS, status, receivedAt: Date.now(), version }
 
   if(status === "success") {
     return Object.assign(action, {hunts: json.map(e => Object.assign(e, {id: slugify(e.name)}))})

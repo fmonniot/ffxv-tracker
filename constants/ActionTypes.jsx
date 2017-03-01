@@ -9,7 +9,7 @@ export const RESPONSE_SIDE_QUESTS = 'RESPONSE_SIDE_QUESTS'
 export const COMPLETE_HUNT = 'COMPLETE_HUNT'
 export const HUNT_SORT = 'HUNT_SORT'
 export const HUNT_FILTER = 'HUNT_FILTER'
-export const REQUEST_HUNTS = 'REHUNT_HUNTS'
+export const REQUEST_HUNTS = 'REQUEST_HUNTS'
 export const RESPONSE_HUNTS = 'RESPONSE_HUNTS'
 
 // Drawer

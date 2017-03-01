@@ -3,22 +3,22 @@ import { SYSTEM_INIT, SYSTEM_CONFIG_RESPONSE } from '../constants/ActionTypes';
 import { receiveSideQuests, requestSideQuests } from './quests';
 import { receiveHunts, requestHunts } from './hunts';
 
-const receiveGeneratedData = (status, json, version) => (dispatch) => {
-  dispatch(receiveSideQuests(status, json.sideQuests))
-  dispatch(receiveHunts(status, json.hunts))
-  dispatch(updateVersion('generated', version))
-}
-
-export const fetchGeneratedData = (version) => (dispatch) => {
-
-  // Inform the app we start the request
-  dispatch(requestSideQuests())
+export const fetchHunts = (version) => (dispatch) => {
   dispatch(requestHunts())
 
-  return fetch('./data/generated.json')
+  return fetch('./data/hunts.json')
     .then(response => response.json())
-    .then(json => dispatch(receiveGeneratedData('success', json, version)))
-    .catch(err => dispatch(receiveGeneratedData('error', err)))
+    .then(json => dispatch(receiveHunts('success', json, version)))
+    .catch(err => dispatch(receiveHunts('error', err)))
+}
+
+export const fetchSideQuests = (version) => (dispatch) => {
+  dispatch(requestSideQuests())
+
+  return fetch('./data/side-quests.json')
+    .then(response => response.json())
+    .then(json => dispatch(receiveSideQuests('success', json, version)))
+    .catch(err => dispatch(receiveSideQuests('error', err)))
 }
 
 export const updateVersion = (key, version) => {

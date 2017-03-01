@@ -1,21 +1,24 @@
 import { SYSTEM_INIT, SYSTEM_CONFIG_RESPONSE, SYSTEM_VERSION_UPDATED } from '../constants/ActionTypes'
-import { fetchGeneratedData, updateVersion } from '../actions/system'
+import { updateVersion, fetchHunts, fetchSideQuests } from '../actions/system'
+import { V_APP, V_HUNTS, V_SIDE_QUESTS, V_HUNTER_RANKS } from '../constants/Config'
 
 const initialState = {
 
     // Start at 0, that way we can be sure to load a more recent one (in localstorage)
     versions: {
-        'app': 0,
-        'generated': 0,
-        'hunter-ranks': 0
+        [V_APP]: 0,
+        [V_HUNTER_RANKS]: 0,
+        [V_SIDE_QUESTS]: 0,
+        [V_HUNTS]: 0
     },
     loading: false,
     error: undefined
 }
 
 const ACTIONS = {
-    generated: fetchGeneratedData,
-    app: (v) => updateVersion('app', v)
+    [V_SIDE_QUESTS]: fetchSideQuests,
+    [V_HUNTS]: fetchHunts,
+    [V_APP]: (v) => updateVersion('app', v)
 }
 
 export default function system(state = initialState, action) {

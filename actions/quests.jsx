@@ -32,8 +32,8 @@ function slugify(text) {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
-export const receiveSideQuests = (status, json) => (dispatch) => {
-  const action = { type: types.RESPONSE_SIDE_QUESTS, status, receivedAt: Date.now() }
+export const receiveSideQuests = (status, json, version) => (dispatch) => {
+  const action = { type: types.RESPONSE_SIDE_QUESTS, status, receivedAt: Date.now(), version }
 
   if(status === "success") {
     dispatch(Object.assign(action, {quests: json.map(e => Object.assign(e, {id: slugify(e.name)}))}))

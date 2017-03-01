@@ -2,10 +2,12 @@ import { SYSTEM_INIT, SYSTEM_CONFIG_RESPONSE, SYSTEM_VERSION_UPDATED } from '../
 import { fetchGeneratedData, updateVersion } from '../actions/system'
 
 const initialState = {
+
+    // Start at 0, that way we can be sure to load a more recent one (in localstorage)
     versions: {
-        app: 1,
-        generated: 0 // Start at 0, that way we can be sure to load a more recent one (in localstorage)
-        //quests: 0
+        'app': 0,
+        'generated': 0,
+        'hunter-ranks': 0
     },
     loading: false,
     error: undefined
@@ -28,7 +30,9 @@ export default function system(state = initialState, action) {
                 const versions = action.json.versions
                 Object.keys(action.json.versions).forEach(key => {
                     if (versions[key] > state.versions[key]) {
-                        action.asyncDispatch(ACTIONS[key](versions[key]))
+                        if(ACTIONS[key] !== undefined) {
+                            action.asyncDispatch(ACTIONS[key](versions[key]))
+                        }
                     }
                 })
 
@@ -38,7 +42,9 @@ export default function system(state = initialState, action) {
             }
 
         case SYSTEM_VERSION_UPDATED:
-            return Object.assign({}, state, {versions: { [action.key]: action.version }})
+            const versions = Object.assign({}, state.versions, { [action.key]: action.version })
+            console.log("SYSTEM_VERSION_UPDATED", action, versions)
+            return Object.assign({}, state, { versions })
 
         default:
             return state

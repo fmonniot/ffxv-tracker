@@ -8,6 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import App from '../containers/App';
 import QuestList from '../containers/QuestList'
 import HuntList from '../containers/HuntList'
+import Settings from '../containers/Settings'
 import configureStore from '../store/configureStore'
 import { initSystem } from '../actions/system'
 
@@ -33,6 +34,7 @@ ReactDOM.render(
         <IndexRedirect to="/side-quests" />
         <Route path="/side-quests" component={QuestList} />
         <Route path="/hunts" component={HuntList} />
+        <Route path="/settings" component={Settings} />
       </Route>
     </Router>
   </Provider>,

@@ -3,7 +3,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import CompletableListView from '../components/CompletableListView'
+import ListHeader from '../components/ListHeader'
+
 import * as QuestsActions from '../actions/quests'
+import * as NavActions from '../actions/navigation'
 
 class QuestList extends Component {
 
@@ -19,13 +22,31 @@ class QuestList extends Component {
     }
 
     render() {
-        const { filter, sort, items} = this.props
+        const { filter, sort, items, nav, actions} = this.props
+
+        const completedItemsCount = items.reduce((count, item) =>
+            item.completed ? count + 1 : count,
+            0
+        )
+        const activeItemCount = items.length - completedItemsCount
 
         return (
+            <div>
+                <ListHeader 
+                    subtitle="Quests"
+                    onMenuClick={nav.openDrawer}
+                    onShow={actions.filterQuests.bind(this)}
+                    onSort={actions.sortQuests.bind(this)}
+                    completedCount={completedItemsCount}
+                    activeCount={activeItemCount}
+                    activeFilter={filter}
+                    activeSort={sort}
+                    />
                 <CompletableListView items={items}
                         onItemCompletion={this.handleQuestCompletion.bind(this)}
                         filter={filter} 
                         sort={sort} />
+            </div>
         )
     }
 }
@@ -36,7 +57,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(QuestsActions, dispatch)
+        actions: bindActionCreators(QuestsActions, dispatch),
+        nav: bindActionCreators(NavActions, dispatch)
     }
 }
 

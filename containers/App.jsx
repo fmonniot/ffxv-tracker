@@ -11,7 +11,6 @@ import Snackbar from 'material-ui/Snackbar'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import theme from '../src/material_ui_raw_theme_file'
 
-import Header from '../components/Header'
 import * as QuestsActions from '../actions/quests'
 import * as HuntsActions from '../actions/hunts'
 import * as NavActions from '../actions/navigation'
@@ -74,13 +73,7 @@ class App extends Component {
   render() {
     const { items: { filter, sort, items}, actions, drawer, children, kind } = this.props
 
-    const completedItemsCount = items.reduce((count, item) =>
-      item.completed ? count + 1 : count,
-      0
-    )
-    const activeItemCount = items.length - completedItemsCount
-
-    const openSnackBar = items.error !== undefined
+    const openSnackBar = items !== undefined && items.error !== undefined
     const messageSnackBar = openSnackBar ? items.error : ''
 
     return (
@@ -97,17 +90,8 @@ class App extends Component {
                     onRequestChange={this.onMenuTapped.bind(this)} >
               <MenuItem onTouchTap={this.onMenuItemTapped.bind(this, '/side-quests')}>Side Quests</MenuItem>
               <MenuItem onTouchTap={this.onMenuItemTapped.bind(this, '/hunts')}>Hunts</MenuItem>
+              <MenuItem onTouchTap={this.onMenuItemTapped.bind(this, '/settings')}>Settings</MenuItem>
             </Drawer>
-            <Header 
-              subtitle={kind}
-              onMenuClick={actions.nav.openDrawer}
-              onShow={this.handleShow.bind(this)}
-              onSort={this.handleSort.bind(this)}
-              completedCount={completedItemsCount}
-              activeCount={activeItemCount}
-              activeFilter={filter}
-              activeSort={sort}
-            />
             {this.props.children}
           </div>
         </MuiThemeProvider>

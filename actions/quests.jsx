@@ -1,5 +1,4 @@
 import * as types from '../constants/ActionTypes';
-import { updateVersion } from './system'
 
 // Complete toggle and Reset
 
@@ -37,7 +36,6 @@ export const receiveSideQuests = (status, json, version) => (dispatch) => {
 
   if(status === "success") {
     dispatch(Object.assign(action, {quests: json.map(e => Object.assign(e, {id: slugify(e.name)}))}))
-    //dispatch(updateVersion(''))
   } else {
     dispatch(Object.assign(action, {error: json}))
   }

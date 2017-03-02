@@ -13,7 +13,16 @@
   <body>
     <div id="root"></div>
     <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(function(registration) {
+          //success
+          console.log('ServiceWorker success with scope:', registration.scope, registration)
+          registration.update() // Try to update the service worker if it has changed
+        }).catch(function(err){
+          console.log('ServiceWorker reg failed:', err)
+        })
+      }
     </script>
-    <script src="./bundle.js"></script>
+    <script async src="./bundle.js"></script>
   </body>
 </html>

@@ -22,7 +22,7 @@ export default function hunts(state = initialState, action) {
         return merge({}, find(state.items, {'id': item.id}), item)
       })
 
-      action.asyncDispatch(updateVersion(V_HUNT, action.version))
+      action.asyncDispatch(updateVersion(V_HUNTS, action.version))
       return Object.assign({}, state, { items, error: undefined });
     } else {
       return Object.assign({}, state, {error: action.error});

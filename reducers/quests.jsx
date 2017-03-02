@@ -26,7 +26,7 @@ export default function quests(state = initialState, action) {
       })
 
       action.asyncDispatch(updateVersion(V_SIDE_QUESTS, action.version))
-      return Object.assign({}, state, { items });
+      return Object.assign({}, state, { items, error: undefined });
     } else {
       return Object.assign({}, state, {error: action.error});
     }
